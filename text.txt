@@ -1,0 +1,32 @@
+
+
+DB connection data
+
+database=yum
+port=3306
+username=root
+password=yumOnline21
+
+
+remote host
+
+service_uri = mysql://avnadmin:AVNS_Dka-rTnprLXKukCt_zR@mysql-28df338f-kalebkb996-47db.aivencloud.com:27724/defaultdb?ssl-mode=REQUIRED
+
+database name = defaultdb
+
+host = mysql-28df338f-kalebkb996-47db.aivencloud.com
+
+port = 27724
+
+user = avnadmin
+
+password = AVNS_Dka-rTnprLXKukCt_zR
+
+
+
+
+
+prompt:
+
+
+write a description for these foods that im about to list for a food delivery app, it needs to be short and a description for each food should be returned using a numbered list, here are the foods: veggies burger, chocolate donut
