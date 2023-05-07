@@ -172,7 +172,7 @@ app.post('/login', async (req, res) => {
     }
 
     // Login successful
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, user });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Internal server error' });
@@ -216,7 +216,7 @@ app.get('/categories', async (req, res) => {
 //dishes per category
 app.get('/categories/:categoryId/dishes', async (req, res) => {
 
-    const categoryId = req.params.categoryId;
+  const categoryId = req.params.categoryId;
   
   try {
     const category = await Category.findByPk(categoryId);
@@ -230,7 +230,7 @@ app.get('/categories/:categoryId/dishes', async (req, res) => {
       attributes: ['id', 'name', 'description', 'price', 'ingredients', 'img_url']
     });
 
-    res.json(dishes);
+    res.json({category, dishes});
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Server error' });

@@ -29,4 +29,10 @@ password = AVNS_Dka-rTnprLXKukCt_zR
 prompt:
 
 
-write a description for these foods that im about to list for a food delivery app, it needs to be short and a description for each food should be returned using a numbered list, here are the foods: veggies burger, chocolate donut
+write a description for these foods that im about to list for a food delivery app, it needs to be short and a description for each food should be returned using a numbered list, here are the foods: veggies burger, chocolate donut, turkey burger, vanilla frosted donut, french fries, strawberry banana smoothie
+
+
+
+live cloud server
+
+https://weak-tan-ostrich-tutu.cyclic.app
