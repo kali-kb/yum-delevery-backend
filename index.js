@@ -3,14 +3,15 @@ const { Sequelize, Op  } = require('sequelize');
 const Category = require('./models/CategoryModel')
 const bodyParser = require('body-parser');
 const Dish = require('./models/DishModel')
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+const swaggerDocument = YAML.load('./swagger.yaml'); 
 const app = express();
 const sequelize = require('./config/connection')
-
 const CategoryModel = require('./models/CategoryModel')
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 require('dotenv').config();
-
 
 (async () => {
   try {
@@ -23,7 +24,7 @@ require('dotenv').config();
   }
 })();
 
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const User = sequelize.define('User', {
   id: {

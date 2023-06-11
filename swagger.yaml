@@ -1,0 +1,375 @@
+swagger: '2.0'
+info:
+  title: Yum Delivery API
+  version: 1.0.0
+paths:
+
+  /create-user:
+    post:
+      summary: Create a user
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '201':
+          description: User created successfully
+          schema:
+            type: object
+            properties:
+              user:
+                $ref: '#/definitions/User'
+        '400':
+          description: Bad request
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        '500':
+          description: Internal server error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+  /login:
+    post:
+      summary: User login
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+      responses:
+        '200':
+          description: Login successful
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+              user:
+                $ref: '#/definitions/User'
+        '401':
+          description: Unauthorized
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+        '500':
+          description: Internal server error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+  /home:
+    get:
+      summary: Get categories and dishes
+      parameters:
+        - name: limit
+          in: query
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              categories:
+                type: array
+                items:
+                  $ref: '#/definitions/Category'
+              dishes:
+                type: array
+                items:
+                  $ref: '#/definitions/Dish'
+        '500':
+          description: Internal server error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+
+  /categories:
+    get:
+      summary: Get category list
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Category'
+        '500':
+          description: Internal server error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
+  /categories/{categoryId}/dishes:
+    get:
+      summary: Get dishes by category ID
+      parameters:
+        - name: categoryId
+          in: path
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            properties:
+              category:
+                $ref: '#/definitions/Category'
+              dishes:
+                type: array
+                items:
+                  $ref: '#/definitions/Dish'
+        '404':
+          description: Category not found
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+        '500':
+          description: Server error
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    /dishes:
+    get:
+      summary: Get all dishes
+      responses:
+        200:
+          description: OK
+  /dish/{id}:
+    get:
+      summary: Get dish by ID
+      parameters:
+        - name: id
+          in: path
+          description: Dish ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+        404:
+          description: Dish not found
+  /create-wish:
+    post:
+      summary: Add a dish to a wish list
+      parameters:
+        - name: userId
+          in: body
+          description: User ID
+          required: true
+          type: integer
+          format: int64
+        - name: dishId
+          in: body
+          description: Dish ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        201:
+          description: Wish created successfully
+  /users/{userId}/wishes:
+    get:
+      summary: Get wishes for a user
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+  /wishes/{userId}/clear:
+    delete:
+      summary: Clear wishlist for a user
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        204:
+          description: Wishlist cleared successfully
+  /wishes/{id}/delete:
+    delete:
+      summary: Delete a wish
+      parameters:
+        - name: id
+          in: path
+          description: Wish ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Wish deleted successfully
+        404:
+          description: Wish not found
+  /add-to-basket:
+    post:
+      summary: Add an item to the basket
+      parameters:
+        - name: userId
+          in: body
+          description: User ID
+          required: true
+          type: integer
+          format: int64
+        - name: dishId
+          in: body
+          description: Dish ID
+          required: true
+          type: integer
+          format: int64
+        - name: quantity
+          in: body
+          description: Quantity
+          required: true
+          type: integer
+          format: int32
+      responses:
+        200:
+          description: OK
+  /user/{userId}/basket:
+    get:
+      summary: Get basket items by user ID
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+  /basket/{id}/delete:
+    delete:
+      summary: Delete an item from the basket
+      parameters:
+        - name: id
+          in: path
+          description: Line item ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Line item deleted successfully
+        404:
+          description: Line item not found
+  /basket/{userId}/clear:
+    delete:
+      summary: Clear basket for a user
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Basket cleared successfully
+  /search:
+    get:
+      summary: Search dishes
+      parameters:
+        - name: q
+          in: query
+          description: Search query
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+  /create-order:
+    post:
+      summary: Create an order
+      parameters:
+        - name: additional_customer_info
+          in: body
+          description: Additional customer info
+          required: true
+          type: string
+        - name: userId
+          in: body
+          description: User ID
+          required: true
+          type: integer
+          format: int64
+        - name: lineItemId
+          in: body
+          description: Line item ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+  /orders/{userId}:
+    get:
+      summary: Get orders by user ID
+      parameters:
+        - name: userId
+          in: path
+          description: User ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK
+  /orders/{id}/delete:
+    delete:
+      summary: Delete an order by ID
+      parameters:
+        - name: id
+          in: path
+          description: Order ID
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: Order deleted successfully
+        404:
+          description: Order not found

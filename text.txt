@@ -36,3 +36,10 @@ write a description for these foods that im about to list for a food delivery ap
 live cloud server
 
 https://weak-tan-ostrich-tutu.cyclic.app
+
+joe@gmail.com
+abc123
+
+{data.categories.map(item => (
+  return <CategoryCard />
+))}
