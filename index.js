@@ -142,6 +142,24 @@ app.get('/', (req, res) => {
 });
 
 
+
+app.get('/users', async (req, res) => {
+  try {
+    // Fetch all users from the User model
+    const users = await User.findAll();
+
+    // Return the list of users as a response
+    res.json(users);
+  } catch (error) {
+    // Handle any errors that occur during the fetch operation
+    console.error(error);
+    res.status(500).json({ message: 'An error occurred' });
+  }
+});
+
+
+
+
 app.post('/create-user', async (req, res) => {
   if (!req.body.email) {
     return res.status(400).json({ error: 'Email is required' });
@@ -204,15 +222,37 @@ app.get('/home', async (req, res) => {
 });
 
 //category list
+// app.get('/categories', async (req, res) => {
+//   try {
+//     const categories = await Category.findAll();
+//     res.json(categories);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'Something went wrong' });
+//   }
+// });
+
 app.get('/categories', async (req, res) => {
   try {
     const categories = await Category.findAll();
-    res.json(categories);
+    const categoryIds = categories.map(category => category.id);
+
+    const dishes = await Dish.findAll({
+      where: { categoryId: categoryIds },
+    });
+
+    const categoriesWithDishes = categories.map(category => ({
+      ...category.toJSON(),
+      dishes: dishes.filter(dish => dish.categoryId === category.id),
+    }));
+
+    res.json(categoriesWithDishes);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Something went wrong' });
   }
 });
+
 
 //dishes per category
 app.get('/categories/:categoryId/dishes', async (req, res) => {
@@ -528,3 +568,6 @@ app.delete('/orders/:id/delete', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server listening on port http://localhost:3000');
 });
+
+
+module.exports = app;
