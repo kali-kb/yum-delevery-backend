@@ -3,7 +3,24 @@ info:
   title: Yum Delivery API
   version: 1.0.0
 paths:
-
+  
+  /users:
+    get:
+      summary: Get a list of users
+      responses:
+        '200':
+          description: Successful response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/User'
+        '500':
+          description: Internal server error
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
   /create-user:
     post:
       summary: Create a user
